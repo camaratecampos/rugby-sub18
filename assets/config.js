@@ -16,11 +16,10 @@ window.CONFIG = {
   /* Pontuação */
   pontos: { vitoria: 4, empate: 2, derrota: 0 },
   bonus: {
-    /* "absoluto": bónus com X ou mais ensaios.
-       "diferenca": bónus com X ou mais ensaios do que o adversário. */
-    ofensivoModo: "absoluto",
-    ofensivoEnsaios: 4,
-    ofensivoDiferenca: 3,
+    /* Bónus ofensivo: é preciso cumprir AS DUAS condições.
+       Para desligar uma delas, ponha-a a null. */
+    ofensivoEnsaios: 4,    // marcar pelo menos 4 ensaios
+    ofensivoDiferenca: 3,  // e pelo menos 3 ensaios a mais do que o adversário
     /* Bónus defensivo: perder por esta margem ou menos. */
     defensivoMargem: 7,
   },

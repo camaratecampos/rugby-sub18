@@ -43,7 +43,7 @@ Sugestão: em **Dados › Validação de dados**, crie uma lista com os nomes da
 ## 2. Regras (em `assets/config.js`)
 
 - Vitória 4, empate 2, derrota 0.
-- Bónus ofensivo +1 com 4 ou mais ensaios (ou `ofensivoModo: "diferenca"` para "3 ensaios a mais do que o adversário").
+- Bónus ofensivo +1 ao marcar pelo menos 4 ensaios **e** pelo menos 3 ensaios a mais do que o adversário (`ofensivoEnsaios` e `ofensivoDiferenca`).
 - Bónus defensivo +1 ao perder por 7 pontos ou menos.
 - Desempate: diferença de pontos, pontos marcados, ensaios marcados.
 - `fase2ComecaDoZero`: se for `false`, a 2ª fase herda os pontos da 1ª.

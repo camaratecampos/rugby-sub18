@@ -149,8 +149,9 @@
     const res = my > op ? "V" : my < op ? "D" : "E";
     let bo = 0, bd = 0;
     if (myT != null) {
-      if (B.ofensivoModo === "diferenca") { if (opT != null && myT - opT >= B.ofensivoDiferenca) bo = 1; }
-      else if (myT >= B.ofensivoEnsaios) bo = 1;
+      const okMin = B.ofensivoEnsaios == null || myT >= B.ofensivoEnsaios;
+      const okDif = B.ofensivoDiferenca == null || (opT != null && myT - opT >= B.ofensivoDiferenca);
+      if (okMin && okDif) bo = 1;
     }
     if (res === "D" && op - my <= B.defensivoMargem) bd = 1;
     const base = res === "V" ? P.vitoria : res === "E" ? P.empate : P.derrota;
