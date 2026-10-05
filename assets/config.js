@@ -8,7 +8,7 @@ window.CONFIG = {
   /* URL do Google Sheets publicado como CSV
      (Ficheiro › Partilhar › Publicar na Web › folha "jogos" › CSV).
      Enquanto estiver vazio, o site mostra os dados de demonstração. */
-  csvUrl: "",
+  csvUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vS4ArFu4wVGnyfXBiLJSWfUmVL65yMzbDXM_5TKTn9VhGldZuxwXyzqRITrhT5rxq82qaJGjpeMBdNd/pub?output=csv",
 
   /* Ficheiro usado enquanto csvUrl estiver vazio. */
   csvLocal: "data/exemplo.csv",
