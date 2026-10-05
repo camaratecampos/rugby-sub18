@@ -48,7 +48,9 @@ Sugestão: em **Dados › Validação de dados**, crie uma lista com os nomes da
 
 Se mudar alguma regra, atualize também o texto "Critérios de pontuação" em `tabela.html`.
 
-As cores das equipas (as riscas dos emblemas) também se mudam em `config.js`.
+### Emblemas
+
+Os emblemas estão em `assets/emblemas/<id>.png` (quadrados, até 160 px, recortados só no símbolo) e os ficheiros originais em `assets/emblemas/originais/`. Para trocar um emblema, substitua o ficheiro `<id>.png` mantendo o nome. Em `config.js`, `emblemaFundo` define a cor do quadrado por trás do emblema (útil para emblemas brancos). Uma equipa sem `emblema` aparece com uma camisola com as riscas de `cores`.
 
 ## 3. Publicar (GitHub Pages)
 

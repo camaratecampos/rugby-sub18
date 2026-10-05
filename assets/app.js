@@ -51,6 +51,7 @@
 
   function badge(t, cls = "") {
     if (!t) return `<span class="badge badge--empty ${cls}" aria-hidden="true"></span>`;
+    if (t.emblema) return `<span class="crest ${cls}" style="background:${t.emblemaFundo || "#fff"}" aria-hidden="true"><img src="${esc(t.emblema)}" alt="" loading="lazy"></span>`;
     const c = t.cores;
     let bg = c[0];
     if (c.length > 1) {
