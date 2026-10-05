@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Classificação · Rugby Sub-18</title>
+<meta name="description" content="Classificação do Campeonato Nacional de Rugby Sub-18.">
+<meta name="theme-color" content="#11130f">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body class="page-tabela">
+<a class="skip" href="#main">Saltar para o conteúdo</a>
+<header class="masthead">
+  <div class="wrap mast-top">
+    <a class="brand" href="./">
+      <span class="brand-kicker">Campeonato Nacional · <span data-epoca></span></span>
+      <span class="brand-title">Rugby <em>Sub‑18</em></span>
+    </a>
+    <nav class="nav" aria-label="Principal">
+      <a href="./">Jornadas</a>
+      <a href="tabela.html" aria-current="page">Classificação</a>
+    </nav>
+  </div>
+  <div class="wrap"><ol class="phase-track" id="phase-track" aria-label="Fases do campeonato"></ol></div>
+</header>
+<main id="main" class="wrap">
+  <div id="status"></div>
+  <div class="phase-tabs phase-tabs--page" id="phase-tabs" role="tablist"></div>
+  <section id="panel" aria-live="polite"></section>
+  <details class="rules">
+    <summary>Critérios de pontuação e desempate</summary>
+    <p>Vitória 4 pontos, empate 2, derrota 0. Bónus ofensivo (+1) ao marcar 4 ou mais ensaios; bónus defensivo (+1) ao perder por 7 pontos ou menos.</p>
+    <p>Em caso de igualdade: diferença de pontos, pontos marcados, ensaios marcados.</p>
+  </details>
+</main>
+<footer class="foot wrap">
+  <p>Campeonato Nacional Sub‑18 · <span data-epoca></span></p>
+  <p>Resultados via Google Sheets</p>
+</footer>
+<script src="assets/config.js"></script>
+<script src="assets/app.js"></script>
+<script src="assets/tabela.js"></script>
+</body>
+</html>
