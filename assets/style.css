@@ -132,7 +132,7 @@ code { font-family: var(--f-mono); font-size: .85em; }
 /* trilho das fases */
 .phase-track {
   list-style: none; margin: 0; padding: 0 0 22px;
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;
+  display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 6px;
 }
 .phase {
   display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto auto;
@@ -365,39 +365,7 @@ tr.cut td { border-bottom: 2px solid var(--ink); }
   .groups .c-team .short { display: inline; }
 }
 
-/* ---------- play-off ---------- */
-.bracket { display: grid; gap: 16px; align-items: center; }
-.br-col { display: grid; gap: 16px; position: relative; }
-@media (min-width: 900px) {
-  .bracket { grid-template-columns: 1.1fr 1fr .8fr; gap: 40px; }
-  .br-col:first-child::after { /* conectores */
-    content: ""; position: absolute; right: -20px; top: 25%; bottom: 25%; width: 20px;
-    border: 2px solid var(--line); border-left: 0; border-radius: 0 12px 12px 0;
-  }
-  .br-col--final::before, .br-col--final::after {
-    content: ""; position: absolute; top: 50%; width: 20px; border-top: 2px solid var(--line);
-  }
-  .br-col--final::before { left: -20px; }
-  .br-col--final::after { right: -40px; width: 40px; }
-}
-.bm { background: var(--card); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; box-shadow: var(--shadow); }
-.bm-label {
-  margin: 0; display: flex; justify-content: space-between; gap: 8px; padding: 10px 14px 8px;
-  font: 500 11px/1.2 var(--f-mono); text-transform: uppercase; letter-spacing: .05em; color: var(--ink-3);
-}
-.bm-label span:first-child { color: var(--ink); font-weight: 700; }
-.bt { display: grid; grid-template-columns: auto 1fr 56px; align-items: center; gap: 10px; padding-left: 14px; min-height: 46px; }
-.bt + .bt { border-top: 1px dashed var(--line); }
-.bt-name { font-weight: 600; }
-.bt.is-tbd .bt-name { color: var(--ink-3); font-weight: 500; font-style: italic; }
-.bt.is-loss .bt-name { color: var(--ink-2); font-weight: 500; }
-.bt-score {
-  align-self: stretch; display: grid; place-items: center;
-  background: var(--board); color: var(--board-ink); font: 800 28px/1 var(--f-display);
-}
-.bt-score:empty { background: var(--paper-2); }
-.bt.is-win .bt-score { color: var(--lime); }
-.bt.is-loss .bt-score { color: rgba(242, 239, 230, .55); }
+/* ---------- campeão ---------- */
 .champ {
   border-radius: var(--r); padding: 18px; background: var(--board); color: var(--board-ink);
   display: grid; gap: 8px; position: relative; overflow: hidden; padding-right: 72px;
@@ -410,7 +378,8 @@ tr.cut td { border-bottom: 2px solid var(--ink); }
 .champ-label { font: 500 11px/1 var(--f-mono); text-transform: uppercase; letter-spacing: .08em; color: rgba(242, 239, 230, .6); }
 .champ-team { font: 900 32px/1 var(--f-display); text-transform: uppercase; display: flex; align-items: center; gap: 12px; color: rgba(242, 239, 230, .4); }
 .champ.is-set .champ-team { color: var(--lime); }
-.hint { font-size: 13px; color: var(--ink-2); margin-top: 16px; }
+.champ.is-lead .champ-team { color: var(--board-ink); }
+.champ { margin-bottom: 20px; }
 
 /* ---------- regras / rodapé ---------- */
 .rules { margin-top: 28px; border-top: 1px solid var(--line); padding-top: 14px; color: var(--ink-2); font-size: 14px; }

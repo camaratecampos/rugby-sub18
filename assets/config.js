@@ -25,13 +25,8 @@ window.CONFIG = {
   },
 
   /* Formato do campeonato */
-  fase1Apurados: 8,       // os 8 primeiros da 1ª fase seguem para a 2ª
-  fase2Apurados: 2,       // os 2 primeiros de cada grupo vão ao play-off
-  fase2ComecaDoZero: true, // false = a 2ª fase herda os pontos da 1ª
-
-  /* Só serve para mostrar uma PROJEÇÃO dos grupos antes de existirem
-     jogos da 2ª fase na folha (posições na tabela da 1ª fase). */
-  gruposProjecao: { A: [1, 4, 5, 8], B: [2, 3, 6, 7] },
+  fase1Apurados: 6,        // os 6 primeiros da 1ª fase seguem para a Final 6
+  fase2ComecaDoZero: true, // false = a Final 6 herda os pontos da 1ª fase
 
   /* Equipas: "cores" desenha as riscas (hoops) do emblema.
      "aliases" são outros nomes aceites na folha. */

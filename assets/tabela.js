@@ -1,7 +1,7 @@
 /* Página de classificação */
 (function () {
   "use strict";
-  const { C, TEAMS, esc, badge, standings, winner, currentPhase, PHASES, boot } = window.Rugby;
+  const { C, TEAMS, esc, badge, standings, currentPhase, PHASES, boot } = window.Rugby;
 
   let data = null, phase = 1;
 
@@ -45,72 +45,16 @@
     const f1 = standings(matches.filter((m) => m.fase === 1), TEAMS);
 
     const f2m = matches.filter((m) => m.fase === 2);
-    let groups = {}, projected = false;
-    const letters = [...new Set(f2m.map((m) => m.grupo).filter(Boolean))].sort();
-    let base = null;
-    if (!C.fase2ComecaDoZero) base = new Map(f1.map((r) => [r.team.id, r.pts]));
-    if (letters.length) {
-      letters.forEach((g) => {
-        const gm = f2m.filter((m) => m.grupo === g);
-        const teams = [...new Map(gm.flatMap((m) => [m.casa, m.fora]).map((t) => [t.id, t])).values()];
-        groups[g] = standings(gm, teams, base);
-      });
-    } else {
-      projected = true;
-      for (const [g, positions] of Object.entries(C.gruposProjecao)) {
-        const teams = positions.map((p) => f1[p - 1]?.team).filter(Boolean);
-        groups[g] = standings([], teams, base);
-      }
-    }
+    const base = C.fase2ComecaDoZero ? null : new Map(f1.map((r) => [r.team.id, r.pts]));
+    let teams = [...new Map(f2m.flatMap((m) => [m.casa, m.fora]).map((t) => [t.id, t])).values()];
+    const projected = !teams.length;
+    if (projected) teams = f1.slice(0, C.fase1Apurados).map((r) => r.team);
+    const f2 = standings(f2m, teams, base);
 
-    const f3m = matches.filter((m) => m.fase === 3);
-    const semis = f3m.filter((m) => m.round.key === "3-mf");
-    const final = f3m.find((m) => m.round.key === "3-f") || null;
-    return { f1, groups, projected, semis, final, f2played: f2m.some((m) => m.played) };
-  }
-
-  /* ---------- play-off ---------- */
-  function bracketTeam(t, placeholder, score, win, decided) {
-    return `<div class="bt ${win ? "is-win" : decided ? "is-loss" : ""} ${t ? "" : "is-tbd"}">
-      ${badge(t)}<span class="bt-name">${t ? esc(t.nome) : esc(placeholder)}</span>
-      <span class="bt-score">${score ?? ""}</span></div>`;
-  }
-
-  function bracketMatch(label, m, phA, phB, tA, tB) {
-    const a = m ? m.casa : tA, b = m ? m.fora : tB;
-    const w = winner(m);
-    const meta = m && m.data ? `${window.Rugby.fmtDate(m.data, true)}${m.hora ? " · " + esc(m.hora) : ""}` : "Por definir";
-    return `<div class="bm">
-      <p class="bm-label"><span>${label}</span><span>${meta}</span></p>
-      ${bracketTeam(a, phA, m?.played ? m.pc : null, w && w === a, !!w)}
-      ${bracketTeam(b, phB, m?.played ? m.pf : null, w && w === b, !!w)}
-    </div>`;
-  }
-
-  function playoff(d) {
-    const gA = d.groups.A || [], gB = d.groups.B || [];
-    const known = d.f2played && !d.projected;
-    const pick = (g, i) => (known ? g[i]?.team : null);
-    const s1 = d.semis[0], s2 = d.semis[1];
-    const w1 = winner(s1), w2 = winner(s2);
-    const champ = winner(d.final);
-
-    return `<div class="bracket">
-      <div class="br-col">
-        ${bracketMatch("Meia-final 1", s1, "1º Grupo A", "2º Grupo B", pick(gA, 0), pick(gB, 1))}
-        ${bracketMatch("Meia-final 2", s2, "1º Grupo B", "2º Grupo A", pick(gB, 0), pick(gA, 1))}
-      </div>
-      <div class="br-col br-col--final">
-        ${bracketMatch("Final", d.final, "Vencedor MF1", "Vencedor MF2", w1, w2)}
-      </div>
-      <div class="br-col">
-        <div class="champ ${champ ? "is-set" : ""}">
-          <span class="champ-label">Campeão Nacional Sub-18</span>
-          <span class="champ-team">${champ ? badge(champ) + esc(champ.nome) : "Por decidir"}</span>
-        </div>
-      </div>
-    </div>
-    ${!d.semis.length && known ? `<p class="hint">Cruzamentos provisórios com base na classificação atual da 2ª fase.</p>` : ""}`;
+    const total = teams.length * (teams.length - 1);
+    const done = !projected && f2m.filter((m) => m.played).length >= total;
+    const started = f2m.some((m) => m.played);
+    return { f1, f2, projected, started, champion: done ? f2[0].team : null };
   }
 
   /* ---------- render ---------- */
@@ -120,23 +64,24 @@
     const d = data;
     if (phase === 1) {
       el.innerHTML = `<div class="panel-head"><h1>Fase regular</h1>
-        <p>Todos contra todos, uma volta. Os ${C.fase1Apurados} primeiros seguem para a fase de grupos.</p></div>
-        ${table(d.f1, { cut: C.fase1Apurados, cutLabel: `Apuramento para a 2ª fase (top ${C.fase1Apurados})` })}`;
-    } else if (phase === 2) {
-      el.innerHTML = `<div class="panel-head"><h1>Fase de grupos</h1>
-        <p>Dois grupos de quatro, duas voltas. Os ${C.fase2Apurados} primeiros de cada grupo seguem para o play-off.</p></div>
-        ${d.projected ? `<div class="notice notice--soft"><strong>Projeção.</strong> A composição dos grupos segue a classificação atual da 1ª fase e só fica definida quando os jogos da 2ª fase forem lançados na folha.</div>` : ""}
-        <div class="groups">${Object.entries(d.groups).map(([g, rows]) =>
-          `<section><h2 class="group-label">Grupo ${esc(g)}</h2>${table(rows, { cut: C.fase2Apurados, cutLabel: "Apuramento para o play-off", projection: d.projected })}</section>`).join("")}</div>`;
+        <p>Todos contra todos, uma volta. Os ${C.fase1Apurados} primeiros seguem para a Final 6.</p></div>
+        ${table(d.f1, { cut: C.fase1Apurados, cutLabel: `Apuramento para a Final 6 (top ${C.fase1Apurados})` })}`;
     } else {
-      el.innerHTML = `<div class="panel-head"><h1>Play-off</h1>
-        <p>Meias-finais cruzadas entre grupos. Os vencedores disputam o título.</p></div>${playoff(d)}`;
+      const leader = d.started ? d.f2[0].team : null;
+      el.innerHTML = `<div class="panel-head"><h1>Final 6</h1>
+        <p>Os ${C.fase1Apurados} primeiros da fase regular jogam entre si a duas voltas, em casa e fora. O primeiro é Campeão Nacional.</p></div>
+        ${d.projected ? `<div class="notice notice--soft"><strong>Projeção.</strong> As equipas seguem a classificação atual da fase regular e só ficam definidas quando os jogos da Final 6 forem lançados na folha.</div>` : ""}
+        <div class="champ ${d.champion ? "is-set" : leader ? "is-lead" : ""}">
+          <span class="champ-label">${d.champion ? "Campeão Nacional Sub-18" : leader ? "Líder da Final 6" : "Campeão Nacional Sub-18"}</span>
+          <span class="champ-team">${d.champion ? badge(d.champion) + esc(d.champion.nome) : leader ? badge(leader) + esc(leader.nome) : "Por decidir"}</span>
+        </div>
+        ${table(d.f2, { cut: 1, cutLabel: d.champion ? "Campeão Nacional" : "Lugar de campeão", projection: d.projected })}`;
     }
   }
 
   boot((matches) => {
     data = compute(matches);
-    const fromHash = /^#fase([123])$/.exec(location.hash);
+    const fromHash = /^#fase([12])$/.exec(location.hash);
     phase = fromHash ? +fromHash[1] : currentPhase(matches);
     document.getElementById("phase-tabs").innerHTML = PHASES.map((p) =>
       `<button class="ptab" role="tab" data-phase="${p.n}"><span class="ptab-n">0${p.n}</span>${p.nome}</button>`).join("");

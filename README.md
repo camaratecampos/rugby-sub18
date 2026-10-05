@@ -3,7 +3,7 @@
 Site estático com duas páginas:
 
 - **Jornadas** (`index.html`): resultados jornada a jornada, com bónus, ensaios e a equipa de folga.
-- **Classificação** (`tabela.html`): tabela da fase regular, os dois grupos da 2ª fase e o quadro do play‑off.
+- **Classificação** (`tabela.html`): tabela da fase regular e da Final 6.
 
 Os jogos vêm de uma **folha do Google Sheets**. Basta escrever o resultado na folha e o site atualiza sozinho, sem tocar no código.
 
@@ -20,16 +20,14 @@ As alterações à folha aparecem no site em poucos minutos (o Google demora at�
 
 | Coluna | Exemplo | Notas |
 |---|---|---|
-| `fase` | `1`, `2` ou `3` | |
-| `jornada` | `4` · `Meia-final` · `Final` | Na fase 3, escreva `Meia-final` ou `Final` |
-| `grupo` | `A` / `B` | Só na 2ª fase |
+| `fase` | `1` ou `2` | `1` = fase regular, `2` = Final 6 |
+| `jornada` | `4` | A numeração recomeça em 1 na Final 6 |
 | `data` | `10/10/2026` | |
 | `hora` | `15:00` | |
 | `local` | `Tapada da Ajuda` | Opcional |
 | `casa`, `fora` | `Agronomia` | Nome, nome curto, sigla ou alias definido em `config.js` (maiúsculas e acentos não contam) |
 | `pts_casa`, `pts_fora` | `24`, `17` | Deixe em branco enquanto o jogo não se realizar |
 | `ens_casa`, `ens_fora` | `4`, `2` | Ensaios, para calcular o bónus ofensivo. Opcional |
-| `vencedor` | `CDUL` | Só para jogos do play‑off empatados |
 | `obs` | `Decidido por pontapés` | Aparece por baixo do jogo |
 
 Sugestão: em **Dados › Validação de dados**, crie uma lista com os nomes das equipas nas colunas `casa`, `fora` e `vencedor` para evitar erros de escrita.
@@ -37,8 +35,8 @@ Sugestão: em **Dados › Validação de dados**, crie uma lista com os nomes da
 ### Como avança o campeonato
 
 - **1ª fase:** a equipa de folga em cada jornada é calculada automaticamente.
-- **2ª fase:** quando acabar a 1ª fase, acrescente os 12 jogos de cada grupo com `fase = 2` e o `grupo`. Até lá, a página mostra uma *projeção* dos grupos (definida em `gruposProjecao`, no `config.js`).
-- **Play‑off:** enquanto não houver jogos com `fase = 3`, o quadro mostra os cruzamentos provisórios (1º A × 2º B e 1º B × 2º A). A final preenche‑se sozinha com os vencedores das meias.
+- **Final 6:** quando acabar a 1ª fase, acrescente os 30 jogos da Final 6 (6 equipas, duas voltas, 10 jornadas) com `fase = 2`. Até lá, a página mostra uma *projeção* com os 6 primeiros da fase regular.
+- **Campeão:** quando todos os jogos da Final 6 tiverem resultado, o 1º classificado aparece como Campeão Nacional.
 
 ## 2. Regras (em `assets/config.js`)
 
@@ -46,7 +44,7 @@ Sugestão: em **Dados › Validação de dados**, crie uma lista com os nomes da
 - Bónus ofensivo +1 ao marcar pelo menos 4 ensaios **e** pelo menos 3 ensaios a mais do que o adversário (`ofensivoEnsaios` e `ofensivoDiferenca`).
 - Bónus defensivo +1 ao perder por 7 pontos ou menos.
 - Desempate: diferença de pontos, pontos marcados, ensaios marcados.
-- `fase2ComecaDoZero`: se for `false`, a 2ª fase herda os pontos da 1ª.
+- `fase2ComecaDoZero`: se for `false`, a Final 6 herda os pontos da fase regular.
 
 Se mudar alguma regra, atualize também o texto "Critérios de pontuação" em `tabela.html`.
 

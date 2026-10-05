@@ -190,8 +190,7 @@
   /* ---------- fases ---------- */
   const PHASES = [
     { n: 1, nome: "Fase regular", desc: "11 equipas · uma volta" },
-    { n: 2, nome: "Grupos", desc: "Top 8 · A e B · duas voltas" },
-    { n: 3, nome: "Play-off", desc: "Meias-finais e final" },
+    { n: 2, nome: "Final 6", desc: "Top 6 · duas voltas" },
   ];
   const currentPhase = (matches) =>
     Math.max(1, ...matches.filter((m) => m.played).map((m) => m.fase));
