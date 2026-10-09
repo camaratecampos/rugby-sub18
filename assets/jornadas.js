@@ -138,7 +138,10 @@
   boot((matches) => {
     rounds = buildRounds(matches);
     if (!rounds.length) {
-      document.getElementById("matches").innerHTML = `<p class="empty">Ainda não há jogos na folha.</p>`;
+      document.querySelector(".round-nav").hidden = true;
+      document.getElementById("round-head").hidden = true;
+      document.getElementById("matches").innerHTML =
+        `<p class="empty">Ainda não há jogos lançados. O calendário aparece aqui assim que for preenchido na folha.</p>`;
       return;
     }
     sel = defaultRound();

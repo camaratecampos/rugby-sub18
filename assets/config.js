@@ -5,13 +5,31 @@
 window.CONFIG = {
   epoca: "2026/27",
 
-  /* URL do Google Sheets publicado como CSV
-     (Ficheiro › Partilhar › Publicar na Web › folha "jogos" › CSV).
-     Enquanto estiver vazio, o site mostra os dados de demonstração. */
-  csvUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vS4ArFu4wVGnyfXBiLJSWfUmVL65yMzbDXM_5TKTn9VhGldZuxwXyzqRITrhT5rxq82qaJGjpeMBdNd/pub?gid=0&single=true&output=csv",
+  /* Escalões
+     Cada escalão tem a sua folha (separador do Google Sheets publicado como
+     CSV: Ficheiro › Partilhar › Publicar na Web › escolher o separador › CSV)
+     e a sua lista de equipas (ids da lista "equipas" mais abaixo).
+     "pasta" é onde ficam as páginas do escalão no site.
+     Enquanto csvUrl estiver vazio, o escalão mostra os dados de demonstração. */
+  escaloes: {
+    sub18: {
+      nome: "Sub-18",
+      pasta: "",
+      csvUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vS4ArFu4wVGnyfXBiLJSWfUmVL65yMzbDXM_5TKTn9VhGldZuxwXyzqRITrhT5rxq82qaJGjpeMBdNd/pub?gid=0&single=true&output=csv",
+      csvLocal: "data/exemplo.csv",
+      equipas: ["direito", "cdul", "agronomia", "belenenses", "cascais", "academica", "cdup", "sport", "santarem", "tecnico", "saomiguel"],
+    },
+    sub16: {
+      nome: "Sub-16",
+      pasta: "sub16/",
+      csvUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vS4ArFu4wVGnyfXBiLJSWfUmVL65yMzbDXM_5TKTn9VhGldZuxwXyzqRITrhT5rxq82qaJGjpeMBdNd/pub?gid=1943121455&single=true&output=csv",
+      csvLocal: "data/exemplo-sub16.csv",
+      equipas: ["direito", "cdul", "agronomia", "belenenses", "cascais", "academica", "cdup", "sport", "santarem", "tecnico", "saomiguel", "cre"],
+    },
+  },
 
-  /* Ficheiro usado enquanto csvUrl estiver vazio. */
-  csvLocal: "data/exemplo.csv",
+  /* As regras e o formato abaixo valem para todos os escalões. Para mudar só
+     um escalão, repita a opção dentro dele (por exemplo fase1Apurados: 8). */
 
   /* Pontuação */
   pontos: { vitoria: 4, empate: 2, derrota: 0 },
@@ -28,7 +46,7 @@ window.CONFIG = {
   fase1Apurados: 6,        // os 6 primeiros da 1ª fase seguem para a Final 6
   fase2ComecaDoZero: true, // false = a Final 6 herda os pontos da 1ª fase
 
-  /* Equipas
+  /* Equipas (de todos os escalões)
      "emblema": imagem do clube (assets/emblemas/). Sem emblema, desenha
                 uma camisola com as riscas de "cores".
      "emblemaFundo": cor do quadrado por trás do emblema (por defeito branco;
@@ -46,5 +64,6 @@ window.CONFIG = {
     { id: "santarem",   nome: "Santarém",                 curto: "Santarém",   sigla: "SAN",  cores: ["#13294B", "#D2232A"], aliases: ["Rugby Clube de Santarém"], emblema: "assets/emblemas/santarem.png" },
     { id: "tecnico",    nome: "Técnico",                  curto: "Técnico",    sigla: "TEC",  cores: ["#FFFFFF", "#6EC1E4"], aliases: ["IST", "Instituto Superior Técnico"], emblema: "assets/emblemas/tecnico.png" },
     { id: "saomiguel",  nome: "São Miguel",               curto: "São Miguel", sigla: "SMI",  cores: ["#14285A", "#141414"], aliases: ["S. Miguel", "CRSM"], emblema: "assets/emblemas/saomiguel.png" },
+    { id: "cre",        nome: "CRE",                      curto: "CRE",        sigla: "CRE",  cores: ["#7A1F35", "#5B2A86"], aliases: [] },
   ],
 };

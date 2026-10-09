@@ -3,7 +3,13 @@
    ========================================================================== */
 (function () {
   "use strict";
-  const C = window.CONFIG;
+  /* Escalão da página (<body data-escalao="sub16" data-root="../">) */
+  const ESC_ID = document.body.dataset.escalao || "sub18";
+  const ROOT = document.body.dataset.root || "";
+  const { escaloes, ...base } = window.CONFIG;
+  const ESC = escaloes[ESC_ID];
+  const C = { ...base, ...ESC, escalao: ESC_ID };
+  const asset = (p) => (/^(https?:)?\/\//.test(p) || p.startsWith("/") ? p : ROOT + p);
 
   /* ---------- utilitários ---------- */
   const slug = (s) =>
@@ -33,9 +39,10 @@
     d ? (long ? `${DIAS[d.getDay()]}, ${d.getDate()} ${MESES[d.getMonth()]}` : `${d.getDate()} ${MESES[d.getMonth()]}`) : "";
 
   /* ---------- equipas ---------- */
-  const TEAMS = C.equipas.map((t) => ({ ...t }));
+  const ALL = base.equipas.map((t) => ({ ...t }));
+  const TEAMS = ESC.equipas.map((id) => ALL.find((t) => t.id === id)).filter(Boolean);
   const bySlug = new Map();
-  TEAMS.forEach((t) => [t.id, t.nome, t.curto, t.sigla, ...(t.aliases || [])]
+  ALL.forEach((t) => [t.id, t.nome, t.curto, t.sigla, ...(t.aliases || [])]
     .forEach((n) => bySlug.set(slug(n), t)));
 
   function findTeam(name) {
@@ -51,7 +58,7 @@
 
   function badge(t, cls = "") {
     if (!t) return `<span class="badge badge--empty ${cls}" aria-hidden="true"></span>`;
-    if (t.emblema) return `<span class="crest ${cls}" style="background:${t.emblemaFundo || "#fff"}" aria-hidden="true"><img src="${esc(t.emblema)}" alt="" loading="lazy"></span>`;
+    if (t.emblema) return `<span class="crest ${cls}" style="background:${t.emblemaFundo || "#fff"}" aria-hidden="true"><img src="${esc(asset(t.emblema))}" alt="" loading="lazy"></span>`;
     const c = t.cores;
     let bg = c[0];
     if (c.length > 1) {
@@ -132,7 +139,7 @@
   let cache;
   function loadMatches() {
     if (cache) return cache;
-    const url = C.csvUrl || C.csvLocal;
+    const url = C.csvUrl || asset(C.csvLocal);
     cache = fetch(url, { cache: "no-store" })
       .then((r) => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.text(); })
       .then((t) => {
@@ -190,8 +197,8 @@
 
   /* ---------- fases ---------- */
   const PHASES = [
-    { n: 1, nome: "Fase regular", desc: "11 equipas · uma volta" },
-    { n: 2, nome: "Final 6", desc: "Top 6 · duas voltas" },
+    { n: 1, nome: "Fase regular", desc: `${TEAMS.length} equipas · uma volta` },
+    { n: 2, nome: "Final 6", desc: `Top ${C.fase1Apurados} · duas voltas` },
   ];
   const currentPhase = (matches) =>
     Math.max(1, ...matches.filter((m) => m.played).map((m) => m.fase));
@@ -228,5 +235,5 @@
       .catch((err) => { console.error(err); renderStatus(err); renderPhaseTrack([]); render([]); });
   }
 
-  window.Rugby = { C, TEAMS, slug, esc, fmtDate, badge, standings, sideResult, winner, currentPhase, PHASES, boot };
+  window.Rugby = { C, TEAMS, asset, slug, esc, fmtDate, badge, standings, sideResult, winner, currentPhase, PHASES, boot };
 })();
