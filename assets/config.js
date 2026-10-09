@@ -64,6 +64,6 @@ window.CONFIG = {
     { id: "santarem",   nome: "Santarém",                 curto: "Santarém",   sigla: "SAN",  cores: ["#13294B", "#D2232A"], aliases: ["Rugby Clube de Santarém"], emblema: "assets/emblemas/santarem.png" },
     { id: "tecnico",    nome: "Técnico",                  curto: "Técnico",    sigla: "TEC",  cores: ["#FFFFFF", "#6EC1E4"], aliases: ["IST", "Instituto Superior Técnico"], emblema: "assets/emblemas/tecnico.png" },
     { id: "saomiguel",  nome: "São Miguel",               curto: "São Miguel", sigla: "SMI",  cores: ["#14285A", "#141414"], aliases: ["S. Miguel", "CRSM"], emblema: "assets/emblemas/saomiguel.png" },
-    { id: "cre",        nome: "CRE",                      curto: "CRE",        sigla: "CRE",  cores: ["#7A1F35", "#5B2A86"], aliases: [] },
+    { id: "cre",        nome: "Clube de Rugby de Évora",  curto: "CRE",        sigla: "CRE",  cores: ["#7A1F35", "#5B2A86"], aliases: ["CR Évora", "Évora", "Rugby Évora"], emblema: "assets/emblemas/cre.png" },
   ],
 };

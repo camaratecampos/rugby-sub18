@@ -42,7 +42,7 @@
     }
     return `<div class="side ${cls}">
       ${badge(t)}
-      <span class="side-name"><span class="long">${esc(t.nome)}</span><span class="short">${esc(t.curto)}</span></span>
+      <span class="side-name"><span class="long">${esc(t.nome.length > 20 ? t.curto : t.nome)}</span><span class="short">${esc(t.curto)}</span></span>
       <span class="side-tags">${tags}</span>
       ${m.played && tries != null ? `<span class="side-tries" title="Ensaios">${tries} ens.</span>` : ""}
       <span class="side-score">${m.played ? pts : ""}</span>

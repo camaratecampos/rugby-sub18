@@ -18,7 +18,7 @@ ESCALOES = [
     },
     {
         "id": "sub16", "nome": "Sub-16", "pasta": "sub16/", "imagem": "assets/partilha-sub16.png",
-        "clubes": "Direito, CDUL, Agronomia, Belenenses, Cascais, Académica, CDUP, Sport, Santarém, Técnico, São Miguel e CRE",
+        "clubes": "Direito, CDUL, Agronomia, Belenenses, Cascais, Académica, CDUP, Sport, Santarém, Técnico, São Miguel e CRE (Évora)",
     },
 ]
 
