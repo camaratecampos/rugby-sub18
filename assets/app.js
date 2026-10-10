@@ -35,6 +35,15 @@
     if (m) return new Date(+m[1], +m[2] - 1, +m[3], 12);
     return null;
   }
+  /* "15:00", "15:00:00", "3:00 PM", "2:00:00 PM" → "15:00" / "14:00" */
+  function parseHora(v) {
+    const s = String(v ?? "").trim();
+    const m = s.match(/^(\d{1,2})[:h.](\d{2})(?::\d{2})?\s*([ap])?\.?\s*m?\.?$/i);
+    if (!m) return s;
+    let h = +m[1];
+    if (m[3]) { const pm = m[3].toLowerCase() === "p"; if (pm && h < 12) h += 12; if (!pm && h === 12) h = 0; }
+    return `${String(h).padStart(2, "0")}:${m[2]}`;
+  }
   const fmtDate = (d, long) =>
     d ? (long ? `${DIAS[d.getDay()]}, ${d.getDate()} ${MESES[d.getMonth()]}` : `${d.getDate()} ${MESES[d.getMonth()]}`) : "";
 
@@ -112,7 +121,7 @@
       const m = {
         idx, fase: num(get(r, "fase")) || 1, jornada: get(r, "jornada"),
         grupo: get(r, "grupo").toUpperCase(), data: parseDate(get(r, "data")),
-        hora: get(r, "hora").slice(0, 5), local: get(r, "local"), casa, fora,
+        hora: parseHora(get(r, "hora")), local: get(r, "local"), casa, fora,
         pc: num(get(r, "pc")), pf: num(get(r, "pf")), ec: num(get(r, "ec")), ef: num(get(r, "ef")),
         vencedor: findTeam(get(r, "vencedor")), obs: get(r, "obs"),
       };
@@ -169,9 +178,7 @@
   function winner(m) {
     if (!m || !m.played) return null;
     if (m.pc !== m.pf) return m.pc > m.pf ? m.casa : m.fora;
-    if (m.vencedor) return m.vencedor;
-    if (m.ec != null && m.ef != null && m.ec !== m.ef) return m.ec > m.ef ? m.casa : m.fora;
-    return null;
+    return null; // empate
   }
 
   function standings(matches, teams, basePts) {

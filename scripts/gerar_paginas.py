@@ -7,7 +7,7 @@ from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
 SITE = "https://rugby-sub18.vercel.app"
-VERSAO = "7"  # mude para obrigar os browsers a descarregar CSS/JS novos
+VERSAO = "8"  # mude para obrigar os browsers a descarregar CSS/JS novos
 EPOCA = "2026/27"
 NOME_SITE = "Rugby Sub-18 e Sub-16 · Campeonatos Nacionais"
 
